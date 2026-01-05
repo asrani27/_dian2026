@@ -10,19 +10,19 @@ class AlatController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         if ($search) {
             $alat = Alat::where('kode', 'like', '%' . $search . '%')
-                        ->orWhere('nama', 'like', '%' . $search . '%')
-                        ->orWhere('jenis', 'like', '%' . $search . '%')
-                        ->orWhere('merk', 'like', '%' . $search . '%')
-                        ->orWhere('bahan', 'like', '%' . $search . '%')
-                        ->latest()
-                        ->paginate(10);
+                ->orWhere('nama', 'like', '%' . $search . '%')
+                ->orWhere('jenis', 'like', '%' . $search . '%')
+                ->orWhere('merk', 'like', '%' . $search . '%')
+                ->orWhere('bahan', 'like', '%' . $search . '%')
+                ->latest()
+                ->paginate(10);
         } else {
             $alat = Alat::latest()->paginate(10);
         }
-        
+
         return view('admin.alat.index', compact('alat', 'search'));
     }
 
