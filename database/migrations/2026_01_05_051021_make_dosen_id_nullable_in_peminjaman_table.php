@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('peminjaman', function (Blueprint $table) {
+            // Drop the foreign key constraint first
+            $table->dropForeign(['dosen_id']);
+            // Make the column nullable
+            $table->foreignId('dosen_id')->nullable()->change();
+            // Re-add the foreign key constraint
+            $table->foreign('dosen_id')->references('id')->on('dosen')->onDelete('set null');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('peminjaman', function (Blueprint $table) {
+            // Drop the foreign key constraint
+            $table->dropForeign(['dosen_id']);
+            // Make the column not nullable
+            $table->foreignId('dosen_id')->nullable(false)->change();
+            // Re-add the foreign key constraint
+            $table->foreign('dosen_id')->references('id')->on('dosen')->onDelete('cascade');
+        });
+    }
+};
